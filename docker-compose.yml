@@ -3,7 +3,23 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      network: host
+    network_mode: host  # ← build: の外側で指定する
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: "postgres:15"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "db:/var/lib/postgres/data"
+    environment:
+      POSTGRES_USER: "app"
+      POSTGRES_PASSWORD: "passwd"  # ← スペル修正
+      POSTGRES_DB: "app"
 
 volumes:
   db:
